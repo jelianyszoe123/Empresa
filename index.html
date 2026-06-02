@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Gestión de Clientes</title>
+<style>
+    body {
+        background: #05070a;
+        color: #f5f5f5;
+        font-family: Arial, sans-serif;
+        margin: 0;
+    }
+    header {
+        background: #000;
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    header img {
+        width: 60px;
+        height: 60px;
+        background: #222;
+        border-radius: 50%;
+    }
+    header h1 {
+        font-size: 20px;
+        color: #f5f5f5;
+    }
+    .centered {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    .box {
+        background: #0d1117;
+        border-radius: 12px;
+        border: 2px solid #d4af37;
+        padding: 25px;
+        width: 320px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.6);
+    }
+    .box h2 {
+        text-align: center;
+        margin-top: 0;
+        color: #d4af37;
+    }
+    input, button, select {
+        width: 100%;
+        padding: 10px;
+        margin: 6px 0;
+        border-radius: 8px;
+        border: none;
+        font-size: 14px;
+    }
+    input {
+        background: #161b22;
+        color: #f5f5f5;
+    }
+    button {
+        background: #1f6feb;
+        color: #fff;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    button:hover {
+        background: #d4af37;
+        color: #000;
+    }
+    .main {
+        padding: 20px;
+    }
+    .search-container {
+        max-width: 600px;
+        margin: 20px auto;
+        background: #0d1117;
+        padding: 20px;
+        border-radius: 12px;
+        border: 2px solid #1f6feb;
+        text-align: center;
+    }
+    .search-container input {
+        width: 75%;
+        display: inline-block;
+    }
+    .search-container button {
+        width: 20%;
+        display: inline-block;
+    }
+    .options {
+        text-align: center;
+        margin-top: 15px;
+    }
+    .options button {
+        width: 180px;
+        margin: 5px;
+    }
+    .card {
+        max-width: 600px;
+        margin: 20px auto;
+        background: #0d1117;
+        padding: 20px;
+        border-radius: 12px;
+        border: 2px solid #d4af37;
+    }
+    .card h3 {
+        margin-top: 0;
+        color: #1f6feb;
+    }
+    form {
+        max-width: 600px;
+        margin: 20px auto;
+        background: #0d1117;
+        padding: 20px;
+        border-radius: 12px;
+        border: 2px solid #d4af37;
+    }
+    ul {
+        list-style: none;
+        padding: 0;
+        max-width: 600px;
+        margin: 20px auto;
+    }
+    li {
+        background: #0d1117;
+        margin-bottom: 8px;
+        padding: 10px;
+        border-radius: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: 1px solid #1f6feb;
+    }
+    li span {
+        flex: 1;
+    }
+    li button {
+        width: auto;
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+    .hidden {
+        display: none;
+    }
+</style>
+</head>
+<body>
+
+<!-- PANTALLA DE CONTRASEÑA -->
+<div id="loginView" class="centered">
+    <div class="box">
+        <h2>Acceso</h2>
+        <input type="password" id="pass" placeholder="Ingresa la contraseña">
+        <button onclick="login()">Entrar</button>
+    </div>
+</div>
+
+<!-- PANTALLA PRINCIPAL -->
+<div id="appView" class="hidden">
+    <header>
+        <!-- Aquí puedes poner tu logo real -->
+        <img alt="">
+        <h1>Panel de Clientes</h1>
+    </header>
+
+    <div class="main">
+        <!-- Barra tipo Google -->
+        <div class="search-container">
+            <input type="text" id="search" placeholder="Buscar cliente por nombre...">
+            <button onclick="buscarCliente()">Buscar</button>
+            <div class="options">
+                <button onclick="mostrarFormulario()">Añadir Cliente</button>
+                <button onclick="mostrarBorrado()">Borrar Cliente</button>
+            </div>
+        </div>
+
+        <!-- Resultado de búsqueda -->
+        <div id="resultado"></div>
+
+        <!-- Formulario Añadir Cliente -->
+        <form id="formCliente" class="hidden">
+            <h2 style="text-align:center;color:#d4af37;">Añadir Cliente</h2>
+
+            <input type="text" id="nombre" placeholder="Nombre del cliente">
+            <label>Fecha de registro</label>
+            <input type="date" id="fechaRegistro">
+            <input type="text" id="telefono" placeholder="Teléfono">
+            <input type="text" id="licencia" placeholder="Número de licencia">
+            <input type="text" id="tramite" placeholder="Trámite">
+            <input type="email" id="email" placeholder="Email">
+            <input type="text" id="direccion" placeholder="Dirección">
+            <input type="number" id="pagos" placeholder="Pagos">
+            <input type="text" id="metodoPago" placeholder="Método de pago">
+            <input type="number" id="balance" placeholder="Balance">
+            <input type="text" id="estatus" placeholder="Estatus">
+            <label>Fecha de examen</label>
+            <input type="date" id="fechaExamen">
+            <label>Fecha de aprobación</label>
+            <input type="date" id="fechaAprobacion">
+
+            <button type="button" onclick="guardarCliente()">Guardar</button>
+        </form>
+
+        <!-- Lista para borrar clientes -->
+        <div id="borrarView" class="hidden">
+            <h2 style="text-align:center;color:#d4af37;">Borrar Cliente</h2>
+            <ul id="listaClientes"></ul>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ---------- LOGIN ----------
+    function login() {
+        const pass = document.getElementById("pass").value;
+        if (pass === "1234") {
+            document.getElementById("loginView").classList.add("hidden");
+            document.getElementById("appView").classList.remove("hidden");
+            cargarListaBorrar();
+        } else {
+            alert("Contraseña incorrecta");
+        }
+    }
+
+    // ---------- UTILIDADES ----------
+    function obtenerLista() {
+        return JSON.parse(localStorage.getItem("clientes")) || [];
+    }
+
+    function guardarLista(lista) {
+        localStorage.setItem("clientes", JSON.stringify(lista));
+    }
+
+    // ---------- AÑADIR CLIENTE ----------
+    function guardarCliente() {
+        let cliente = {
+            nombre: document.getElementById("nombre").value.trim(),
+            fechaRegistro: document.getElementById("fechaRegistro").value,
+            telefono: document.getElementById("telefono").value.trim(),
+            licencia: document.getElementById("licencia").value.trim(),
+            tramite: document.getElementById("tramite").value.trim(),
+            email: document.getElementById("email").value.trim(),
+            direccion: document.getElementById("direccion").value.trim(),
+            pagos: document.getElementById("pagos").value,
+            metodoPago: document.getElementById("metodoPago").value.trim(),
+            balance: document.getElementById("balance").value,
+            estatus: document.getElementById("estatus").value.trim(),
+            fechaExamen: document.getElementById("fechaExamen").value,
+            fechaAprobacion: document.getElementById("fechaAprobacion").value
+        };
+
+        if (!cliente.nombre) {
+            alert("El nombre del cliente es obligatorio");
+            return;
+        }
+
+        let lista = obtenerLista();
+        lista.push(cliente);
+        guardarLista(lista);
+
+        alert("Cliente guardado con éxito");
+
+        document.getElementById("formCliente").reset();
+        cargarListaBorrar();
+    }
+
+    // ---------- BUSCAR CLIENTE ----------
+    function buscarCliente() {
+        let nombre = document.getElementById("search").value.trim().toLowerCase();
+        let lista = obtenerLista();
+        let div = document.getElementById("resultado");
+
+        if (!nombre) {
+            div.innerHTML = "<p style='text-align:center;'>Escribe un nombre para buscar.</p>";
+            return;
+        }
+
+        let cliente = lista.find(c => c.nombre.toLowerCase() === nombre);
+
+        if (!cliente) {
+            div.innerHTML = "<p style='text-align:center;'>Cliente no encontrado.</p>";
+            return;
+        }
+
+        div.innerHTML = `
+            <div class="card">
+                <h3>${cliente.nombre}</h3>
+                <p><b>Fecha de registro:</b> ${cliente.fechaRegistro || "-"}</p>
+                <p><b>Teléfono:</b> ${cliente.telefono || "-"}</p>
+                <p><b>Número de licencia:</b> ${cliente.licencia || "-"}</p>
+                <p><b>Trámite:</b> ${cliente.tramite || "-"}</p>
+                <p><b>Email:</b> ${cliente.email || "-"}</p>
+                <p><b>Dirección:</b> ${cliente.direccion || "-"}</p>
+                <p><b>Pagos:</b> ${cliente.pagos || "-"}</p>
+                <p><b>Método de pago:</b> ${cliente.metodoPago || "-"}</p>
+                <p><b>Balance:</b> ${cliente.balance || "-"}</p>
+                <p><b>Estatus:</b> ${cliente.estatus || "-"}</p>
+                <p><b>Fecha de examen:</b> ${cliente.fechaExamen || "-"}</p>
+                <p><b>Fecha de aprobación:</b> ${cliente.fechaAprobacion || "-"}</p>
+            </div>
+        `;
+    }
+
+    // ---------- LISTA PARA BORRAR ----------
+    function cargarListaBorrar() {
+        let lista = obtenerLista();
+        let ul = document.getElementById("listaClientes");
+        if (!ul) return;
+
+        ul.innerHTML = "";
+
+        if (lista.length === 0) {
+            ul.innerHTML = "<p style='text-align:center;'>No hay clientes guardados.</p>";
+            return;
+        }
+
+        lista.forEach((c, i) => {
+            let li = document.createElement("li");
+            let span = document.createElement("span");
+            span.textContent = c.nombre;
+            let btn = document.createElement("button");
+            btn.textContent = "Borrar";
+            btn.onclick = function() { confirmarBorrar(i); };
+            li.appendChild(span);
+            li.appendChild(btn);
+            ul.appendChild(li);
+        });
+    }
+
+    function confirmarBorrar(i) {
+        let lista = obtenerLista();
+        let nombre = lista[i].nombre;
+
+        if (confirm(`¿Estás seguro de borrar a ${nombre}?`)) {
+            lista.splice(i, 1);
+            guardarLista(lista);
+            alert("Cliente borrado con éxito");
+            cargarListaBorrar();
+            document.getElementById("resultado").innerHTML = "";
+        }
+    }
+
+    // ---------- VISTAS ----------
+    function mostrarFormulario() {
+        document.getElementById("formCliente").classList.remove("hidden");
+        document.getElementById("borrarView").classList.add("hidden");
+    }
+
+    function mostrarBorrado() {
+        document.getElementById("formCliente").classList.add("hidden");
+        document.getElementById("borrarView").classList.remove("hidden");
+        cargarListaBorrar();
+    }
+</script>
+
+</body>
+</html>
