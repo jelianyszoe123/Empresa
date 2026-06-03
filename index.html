@@ -235,8 +235,8 @@
     // ---------- AÑADIR CLIENTE ----------
     function guardarCliente() {
         let cliente = {
-            nombre: document.getElementById("nombre").value.trim(),
-            fechaRegistro: document.getElementById("fechaRegistro").value,
+            nombre: document.getElementById("nombre").value.trim(), 
+            fechanacimiento: document.getElementById("fechanacimiento").value,
             telefono: document.getElementById("telefono").value.trim(),
             licencia: document.getElementById("licencia").value.trim(),
             tramite: document.getElementById("tramite").value.trim(),
@@ -286,7 +286,7 @@
         div.innerHTML = `
             <div class="card">
                 <h3>${cliente.nombre}</h3>
-                <p><b>Fecha de registro:</b> ${cliente.fechaRegistro || "-"}</p>
+                <p><b>Fecha de nacimiento:</b> ${cliente.nacimiento || "-"}</p>
                 <p><b>Teléfono:</b> ${cliente.telefono || "-"}</p>
                 <p><b>Número de licencia:</b> ${cliente.licencia || "-"}</p>
                 <p><b>Trámite:</b> ${cliente.tramite || "-"}</p>
